@@ -22,7 +22,6 @@
     <Folder Include="Configurations\" />
     <Folder Include="ExternalServices\" />
     <Folder Include="Identity\" />
-    <Folder Include="Persistence\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
