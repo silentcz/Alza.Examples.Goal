@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
+    <Folder Include="Entities\Product\" />
     <Folder Include="Events\" />
     <Folder Include="ValueObjects\" />
   </ItemGroup>
