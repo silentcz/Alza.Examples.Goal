@@ -377,6 +377,7 @@ tilt_config.json
 
 # appsettings.Development.json obsahuje hesla uzivatlele na Rabbit, proto ignorovat
 appsettings.Development.json
+DatabaseContextScaffoldCommand.sh
 
 #Private env file for HTTP
 **/*.private.env.json

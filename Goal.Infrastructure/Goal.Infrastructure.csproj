@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Goal.Domain\Goal.Domain.csproj" />
     <ProjectReference Include="..\Goal.Shared\Goal.Shared.csproj" />
-    <ProjectReference Include="..\Goal.Application\Goal.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,13 +15,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Riok.Mapperly" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Configurations\" />
     <Folder Include="ExternalServices\" />
     <Folder Include="Identity\" />
-    <Folder Include="Repositories\" />
+    <Folder Include="Repositories\Interfaces\Product\" />
   </ItemGroup>
 
   <PropertyGroup>
