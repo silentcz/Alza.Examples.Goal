@@ -37,15 +37,16 @@ Ensure the following tools are installed:
 Clone the repository and navigate to the project directory:
 
 ```
-git clone <repository-url>
-cd <project-folder>
+git clone https://github.com/silentcz/Alza.Examples.Goal.git
+cd Alza.Examples.Goal
 ```
 
 ### 2. Configure the Connection String
 Update the connection string in `appsettings.json` to connect to your SQL Server instance:
 
+```
 "ConnectionStrings": {
 "SqlServerConnection": "Server=<your-server>;Database=<your-database>;User Id=<your-username>;Password=<your-password>;TrustServerCertificate=true"
 }
-
+```
 Replace `<your-server>`, `<your-database>`, `<your-username>`, and `<your-password>` with the correct values for your environment.
