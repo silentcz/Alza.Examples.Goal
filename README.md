@@ -50,3 +50,40 @@ Update the connection string in `appsettings.json` to connect to your SQL Server
 }
 ```
 Replace `<your-server>`, `<your-database>`, `<your-username>`, and `<your-password>` with the correct values for your environment.
+
+### 3. Run Database Migrations
+Apply database migrations to create the schema and seed the initial data:
+```
+dotnet ef database update
+```
+### 4. Run the Application
+Start the API service with the following command:
+```
+dotnet run
+```
+The application will be available at `https://localhost:<port>`. Access the Swagger documentation at `/swagger`.
+
+## API Endpoints
+### v1 API Endpoints
+- **GET /api/v1/products**: Fetch all products.
+- **GET /api/v1/products/{id}**: Retrieve a single product by its ID.
+- **PATCH /api/v1/products/{id}/description**: Partially update the description of a product.
+
+### v2 API Endpoints
+- **GET /api/v2/products**: Fetch products with pagination (default page size: 10).
+
+Pagination format:
+```
+GET /api/v2/products?page={pageNumber}&pageSize={pageSize}
+```
+## Database Schema
+The database includes a single table `Products` with the following schema:
+
+| Column Name | Data Type | Constraints |
+| --- | --- | --- |
+| **Id** | INT | PRIMARY KEY, REQUIRED |
+| **Name** | NVARCHAR | REQUIRED |
+| **ImgUri** | NVARCHAR | REQUIRED |
+| **Price** | DECIMAL | REQUIRED |
+| **Description** | NVARCHAR | OPTIONAL |
+Seed data is included for testing purposes.
