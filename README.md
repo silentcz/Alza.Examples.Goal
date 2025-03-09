@@ -8,10 +8,31 @@ This API service provides functionality to:
 
 The API is fully documented using **Swagger** and comes with unit tests to ensure endpoint functionality. The solution leverages a **SQL Server database** for data storage, while also supporting the ability to switch easily between mock and database implementations.
 
+## Features
+- Full support for **REST API best practices**.
+- **Versioned API** for product retrieval, offering paginated results in version `v2`.
+- Secure, maintainable, and production-grade code structure.
+- API documentation available via **Swagger**.
+- Complete test coverage of endpoint functionality using **unit tests**.
+- **Mock data** support for testing purposes.
+- Includes a **SQL Server database** with a seeded initial dataset.
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Tech Stack
+- **Framework**: ASP.NET Core 8.0
+- **Language**: C# 12.0
+- **Database**: SQL Server (with optional mock data for testing)
+- **ORM**: Entity Framework Core
+- **Documentation**: Swagger UI
+- **Testing**: xUnit
+
+## Prerequisites
+Ensure the following tools are installed:
+- .NET SDK 8.0 or newer
+- SQL Server
+- An IDE (e.g., JetBrains Rider or Visual Studio)
+- Postman or equivalent for testing APIs (optional)
+
+## Getting Started
+### 1. Clone the Repository
+Clone the repository and navigate to the project directory:
+
