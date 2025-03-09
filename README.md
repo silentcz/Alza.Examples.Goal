@@ -36,8 +36,8 @@ Ensure the following tools are installed:
 ### 1. Clone the Repository
 Clone the repository and navigate to the project directory:
 
-git clone <<repository-url>>
-cd <<project-folder>>
+git clone '<repository-url>'
+cd '<project-folder>'
 
 ### 2. Configure the Connection String
 Update the connection string in `appsettings.json` to connect to your SQL Server instance:
