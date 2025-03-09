@@ -1,4 +1,6 @@
+using Goal.Api;
 using Goal.Api.Configurations;
+using Goal.API.Middlewares;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
@@ -15,8 +17,8 @@ builder.Services.AddApiVersioning(options =>
 // Přidání podpory API verzování do dokumentace Swagger
 builder.Services.AddVersionedApiExplorer(options =>
 {
-    options.GroupNameFormat = "'v'VVV"; // Formát skupinování (v1, v2, ...)
-    options.SubstituteApiVersionInUrl = true; // Zaměňuje verzi přímo do URL
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
 });
 
 // Přidání kontrolerů a Swaggeru do DI
@@ -26,6 +28,10 @@ builder.Services.AddSwaggerGen();
 
 // Konfigurace Swagger dokumentace pro více verzí
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+
+// Registrace služeb pomocí ServiceExtensions (a dalších DI konfigurací)
+builder.Services.AddServices(builder.Configuration);
+
 
 var app = builder.Build();
 
@@ -40,6 +46,8 @@ app.UseSwaggerUI(options =>
             description.GroupName.ToUpperInvariant());
     }
 });
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

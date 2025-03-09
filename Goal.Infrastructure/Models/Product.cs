@@ -1,6 +1,6 @@
 ﻿namespace Goal.Infrastructure.Models;
 
-public record Product
+public class Product
 {
     public int Id { get; set; }
 

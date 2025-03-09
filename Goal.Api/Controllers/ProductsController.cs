@@ -14,7 +14,8 @@ namespace Goal.API.Controllers;
 public class ProductsController(IProductService productService) : ControllerBase
 {
     /// <summary>
-    /// Retrieves a list of products (Version 1).
+    /// Retrieves a list of products (Version 1)
+    /// | Vrati vsechny produkty
     /// </summary>
     /// <returns>List of products</returns>
     [HttpGet]
@@ -29,7 +30,8 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves a list of products with pagination (Version 2).
+    /// Retrieves a list of products with pagination (Version 2)
+    /// | Vrati vsechny produkty s podporou strankovani
     /// </summary>
     /// <param name="pageNumber">Page number</param>
     /// <param name="pageSize">Number of items per page</param>
@@ -57,7 +59,8 @@ public class ProductsController(IProductService productService) : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves a product by its ID (Shared between API versions 1 and 2).
+    /// Retrieves a product by its ID
+    /// | Vrati produkt podle zvoleneho ID
     /// </summary>
     /// <param name="id">The ID of the product</param>
     /// <returns>The product details</returns>
@@ -68,21 +71,23 @@ public class ProductsController(IProductService productService) : ControllerBase
     public async Task<ActionResult<ProductResponse>> GetProductById(int id)
     {
         var product = await productService.GetProductByIdAsync(id);
+        if (product == null) return NotFound();
         return Ok(product);
     }
 
     /// <summary>
-    /// Updates an existing product (Shared between API versions 1 and 2).
+    /// Updates the description of an existing product
+    /// | Zmena obsahu popisu zvoleneho produktu
     /// </summary>
     /// <param name="id">The ID of the product</param>
     /// <param name="newDescription"></param>
     /// <returns>No content on success</returns>
+    [HttpPatch("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
-    public async Task<IActionResult> UpdateProduct(int id, [FromBody] string newDescription)
+    public async Task<ActionResult<ProductResponse>> UpdateProduct(int id, [FromBody] string newDescription)
     {
         var product = await productService.UpdateProductDescriptionAsync(id, newDescription);
         return Ok(product);

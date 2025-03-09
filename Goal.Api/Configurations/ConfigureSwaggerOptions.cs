@@ -12,12 +12,17 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
         {
             options.SwaggerDoc(description.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo
             {
-                Title = $"My API {description.ApiVersion}",
+                Title = $"Alza Goal API {description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
                 Description = description.IsDeprecated
                     ? "This API version has been deprecated."
                     : string.Empty
             });
         }
+
+        // Add XML doc
+        var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
     }
 }

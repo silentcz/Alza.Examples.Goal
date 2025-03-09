@@ -1,3 +1,4 @@
+Use GoalDatabase;
 -- This script checks if the table exists and creates it if it does not exist
 IF NOT EXISTS (SELECT * FROM information_schema.tables WHERE table_schema = 'GoalSchema' AND table_name = 'Product')
 BEGIN
