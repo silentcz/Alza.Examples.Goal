@@ -8,12 +8,22 @@ namespace Goal.Application.Services.Product;
 
 public class ProductService(IProductRepository repository, IApplicationMapper mapper) : IProductService
 {
+    /// <summary>
+    /// Retrieves a list of all available products
+    /// </summary>
+    /// <returns></returns>
     public async Task<IEnumerable<ProductResponse>?> GetAllProductsAsync()
     {
         var allProducts = await repository.GetAllAsync();
         return allProducts?.Select(mapper.Map);
     }
 
+    /// <summary>
+    /// Retrieves a paginated list of all available products
+    /// </summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     public async Task<PagedResult<ProductResponse>> GetAllProductsPagedAsync(int pageNumber, int pageSize)
     {
         var pagedProducts = await repository.GetPagedAsync(pageNumber, pageSize);
@@ -38,6 +48,11 @@ public class ProductService(IProductRepository repository, IApplicationMapper ma
         };
     }
 
+    /// <summary>
+    /// Retrieves the details of a product by Id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<ProductResponse?> GetProductByIdAsync(int id)
     {
         var product = await repository.GetByIdAsync(id);
@@ -45,6 +60,12 @@ public class ProductService(IProductRepository repository, IApplicationMapper ma
 
     }
 
+    /// <summary>
+    /// Updates the description of a specified product
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="newDescription"></param>
+    /// <returns></returns>
     public async Task<ProductResponse?> UpdateProductDescriptionAsync(int id, string newDescription)
     {
         var updatedProduct = await repository.UpdateAsync(id, newDescription);

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Goal.Domain\Goal.Domain.csproj" />
     <ProjectReference Include="..\Goal.Shared\Goal.Shared.csproj" />
     <ProjectReference Include="..\Goal.Infrastructure\Goal.Infrastructure.csproj" />
   </ItemGroup>
@@ -9,11 +8,6 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" />
     <PackageReference Include="Riok.Mapperly" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-    <Folder Include="Features\" />
   </ItemGroup>
 
   <PropertyGroup>

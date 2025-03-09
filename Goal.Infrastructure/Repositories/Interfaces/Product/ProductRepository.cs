@@ -1,4 +1,3 @@
-using Goal.Domain.Entities.Product;
 using Goal.Shared.DTOs.Product;
 using Goal.Shared.Models.Base;
 

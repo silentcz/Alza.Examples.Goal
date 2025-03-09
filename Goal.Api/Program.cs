@@ -6,36 +6,35 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Přidání verzování API
+// Add API versioning
 builder.Services.AddApiVersioning(options =>
 {
-    options.ReportApiVersions = true; // Přidá informace o dostupných verzích do odpovědi
-    options.AssumeDefaultVersionWhenUnspecified = true; // Použije výchozí verzi, pokud není specifikována
-    options.DefaultApiVersion = new ApiVersion(1, 0); // Výchozí verze (v1.0)
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
 });
 
-// Přidání podpory API verzování do dokumentace Swagger
+// Add API versioning support to Swagger documentation
 builder.Services.AddVersionedApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
 });
 
-// Přidání kontrolerů a Swaggeru do DI
+// Add controllers and Swagger to DI
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Konfigurace Swagger dokumentace pro více verzí
+// Config Swagger documentation for multiple versions
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-// Registrace služeb pomocí ServiceExtensions (a dalších DI konfigurací)
+// Reg. services using ServiceExtensions (and other DI configurations)
 builder.Services.AddServices(builder.Configuration);
-
 
 var app = builder.Build();
 
-// Middleware pro Swagger
+// Middleware for Swagger
 var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
