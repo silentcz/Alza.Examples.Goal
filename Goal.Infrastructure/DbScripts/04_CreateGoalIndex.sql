@@ -1,3 +1,4 @@
+use GoalDatabase;
 -- Index to product name
 CREATE NONCLUSTERED INDEX IX_Product_Name ON GoalSchema.Product (Name);
 
