@@ -23,6 +23,5 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
         // Add XML doc
         var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
         options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-
     }
 }

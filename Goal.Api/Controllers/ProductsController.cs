@@ -1,6 +1,5 @@
 using Goal.Application.Interfaces.Product;
 using Microsoft.AspNetCore.Mvc;
-using Goal.Shared.Models.Request.Product;
 using Goal.Shared.Models.Response.Product;
 
 namespace Goal.API.Controllers;

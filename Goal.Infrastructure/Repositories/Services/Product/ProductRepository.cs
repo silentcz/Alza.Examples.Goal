@@ -1,4 +1,3 @@
-using Goal.Domain.Entities.Product;
 using Goal.Infrastructure.Mappings;
 using Goal.Infrastructure.Persistence;
 using Goal.Infrastructure.Repositories.Interfaces.Product;

@@ -42,13 +42,13 @@ public partial class GoalDatabaseContext : DbContext
         OnModelCreatingPartial(modelBuilder);
     }
 
-    private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+    private static void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Product>(entity =>
         {
             entity.Property(e => e.Description)
-                .IsRequired(false) // Oznámení, že NULL je povolený
-                .HasColumnType("nvarchar(max)"); // Nastavení typu sloupce, pokud je třeba
+                .IsRequired(false)
+                .HasColumnType("nvarchar(max)");
         });
     }
 }
