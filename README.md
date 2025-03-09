@@ -87,3 +87,57 @@ The database includes a single table `Products` with the following schema:
 | **Price** | DECIMAL | REQUIRED |
 | **Description** | NVARCHAR | OPTIONAL |
 Seed data is included for testing purposes.
+
+## Testing
+### Unit Tests
+Run the unit tests with the following command:
+```
+dotnet test
+```
+Unit tests include:
+- Success and failure scenarios for all API endpoints.
+- Coverage of both database-backed and mock data implementations.
+
+## Project Structure
+```
+ProjectFolder/
+│
+├── Controllers/
+│   ├── ProductsController.cs        # Handles product-related API operations
+│
+├── Data/
+│   ├── ApplicationDbContext.cs      # EF Core DbContext for SQL Server
+│   ├── SeedData.cs                  # Initial database seed
+│
+├── Models/
+│   ├── Product.cs                   # Product data model
+│
+├── Repositories/                    # Data access layer
+│   ├── IProductRepository.cs        # Interface for Product repository
+│   ├── ProductRepository.cs         # EF Core implementation
+│   ├── MockProductRepository.cs     # Memory-based mock implementation
+│
+├── Services/                        # Business logic layer
+│   ├── ProductService.cs            # Handles product-related operations
+│
+├── Tests/
+│   ├── ProductsControllerTests.cs   # Unit tests for endpoints
+│
+├── appsettings.json                 # App configuration
+│
+├── Startup.cs                       # Service and middleware configuration
+│
+├── Program.cs                       # Main entry point
+```
+## Deployment
+### Build For Production
+Generate an optimized build for production with the following command:
+```
+dotnet publish -c Release
+```
+The output will be located in the `bin/Release/net8.0/publish` directory.
+### Deployment to Hosting
+Deploy the application to a cloud platform (e.g., Azure App Service), Docker container, or on-premise IIS server. Ensure the database is properly configured and accessible in the deployment environment.
+
+## License
+This project is licensed under the MIT License. See the `LICENSE` file for more information.
