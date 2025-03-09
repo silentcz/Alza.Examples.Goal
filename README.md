@@ -102,32 +102,61 @@ Unit tests include:
 ```
 ProjectFolder/
 │
-├── Controllers/
-│   ├── ProductsController.cs        # Handles product-related API operations
+├── Goal.sln                              # Solution file
+├── README.md                             # Project documentation
+├── .editorconfig                         # Code style settings
+├── .gitignore                            # Git ignored files configuration
+├── Directory.Packages.props              # Shared NuGet package versions
 │
-├── Data/
-│   ├── ApplicationDbContext.cs      # EF Core DbContext for SQL Server
-│   ├── SeedData.cs                  # Initial database seed
+├── Goal.Api/                             # API project
+│   ├── Controllers/
+│   │   ├── ProductsController.cs         # Handles product-related API requests
+│   ├── Configurations/
+│   │   ├── ConfigureSwaggerOptions.cs    # Swagger configuration options
+│   ├── Middlewares/
+│   │   ├── ExceptionHandlingMiddleware.cs # Handles unhandled exceptions uniformly
+│   ├── appsettings.json                  # Application configuration
+│   ├── Program.cs                        # Main entry point for the API
+│   ├── ServiceExtensions.cs              # Host builder service extensions
+│   ├── Goal.Api.csproj                   # Project file
 │
-├── Models/
-│   ├── Product.cs                   # Product data model
+├── Goal.Infrastructure/                  # Infrastructure layer
+│   ├── DbScripts/                        # Database scripts
+│   │   ├── 01_CreateDatabase.sql         # Script to create the database
+│   │   ├── 02_CreateSchema.sql           # Script to create the schema
+│   │   ├── 03_CreateGoalTable.sql        # Script to create the Product table
+│   │   ├── 04_CreateGoalIndex.sql        # Script to create indexes
+│   │   ├── 05_InsertProductsData.sql     # Script to seed products data
+│   ├── Mappings/
+│   │   ├── InfrastructureMapper.cs       # AutoMapper configuration
+│   ├── Models/
+│   │   ├── Product.cs                    # Product entity
+│   ├── Persistence/
+│   │   ├── GoalDatabaseContext.cs        # EF Core DbContext
+│   ├── Repositories/
+│   │   ├── Interfaces/
+│   │   │   ├── ProductRepository.cs      # Interface for product repository
+│   │   ├── Services/
+│   │       ├── ProductRepository.cs      # Repository implementation for EF Core
+│   ├── DbExtensions.cs                   # Database service extensions
+│   ├── Goal.Infrastructure.csproj        # Project file
 │
-├── Repositories/                    # Data access layer
-│   ├── IProductRepository.cs        # Interface for Product repository
-│   ├── ProductRepository.cs         # EF Core implementation
-│   ├── MockProductRepository.cs     # Memory-based mock implementation
+├── Goal.Application/                     # Application layer
+│   ├── Services/
+│   │   ├── Product/
+│   │       ├── ProductService.cs         # Business logic for product management
 │
-├── Services/                        # Business logic layer
-│   ├── ProductService.cs            # Handles product-related operations
+├── Goal.Shared/                          # Shared components
+│   ├── DTOs/
+│   │   ├── Product/
+│   │       ├── ProductDto.cs             # Data transfer object for products
+│   ├── Goal.Shared.csproj                # Project file
 │
-├── Tests/
-│   ├── ProductsControllerTests.cs   # Unit tests for endpoints
+├── Goal.Test/                            # Unit Testing project
+│   ├── UnitTests/
+│   │   ├── Goal/
+│   │       ├── BusinessGoalServiceTests.cs # Unit tests for business services
 │
-├── appsettings.json                 # App configuration
-│
-├── Startup.cs                       # Service and middleware configuration
-│
-├── Program.cs                       # Main entry point
 ```
 ## Deployment
 ### Build For Production
