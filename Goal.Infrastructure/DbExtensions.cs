@@ -17,7 +17,7 @@ public static class DbExtensions
             options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"),
                 sqlOptions => sqlOptions.EnableRetryOnFailure()
             );
-            options.LogTo(Console.WriteLine);
+            //options.LogTo(Console.WriteLine);
         });
 
         services.AddScoped<IProductRepository, ProductRepository>();
