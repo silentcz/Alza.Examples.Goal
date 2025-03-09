@@ -36,3 +36,14 @@ Ensure the following tools are installed:
 ### 1. Clone the Repository
 Clone the repository and navigate to the project directory:
 
+git clone <repository-url>
+cd <project-folder>
+
+### 2. Configure the Connection String
+Update the connection string in `appsettings.json` to connect to your SQL Server instance:
+
+"ConnectionStrings": {
+"SqlServerConnection": "Server=<your-server>;Database=<your-database>;User Id=<your-username>;Password=<your-password>;TrustServerCertificate=true"
+}
+
+Replace `<your-server>`, `<your-database>`, `<your-username>`, and `<your-password>` with the correct values for your environment.
