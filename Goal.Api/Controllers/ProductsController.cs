@@ -1,6 +1,9 @@
+using Goal.Application.Activities.Product;
 using Goal.Application.Interfaces.Product;
+using Goal.Application.Mappings;
 using Microsoft.AspNetCore.Mvc;
 using Goal.Shared.Models.Response.Product;
+using MediatR;
 
 namespace Goal.API.Controllers;
 
@@ -10,7 +13,7 @@ namespace Goal.API.Controllers;
 [ApiVersion("2.0")]
 [Consumes("application/json")]
 [Produces("application/json")]
-public class ProductsController(IProductService productService) : ControllerBase
+public class ProductsController(IProductService productService, IMediator mediator, IApplicationMapper mapper) : ControllerBase
 {
     /// <summary>
     /// Retrieves a list of products (Version 1)
@@ -41,20 +44,14 @@ public class ProductsController(IProductService productService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [MapToApiVersion("2.0")]
-    public async Task<ActionResult<IEnumerable<ProductResponse>>> GetAllProductsV2([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<ProductPageResponse>> GetAllProductsV2([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        if (pageNumber <= 0 || pageSize <= 0)
-        {
-            return BadRequest("Page number and page size must be greater than 0.");
-        }
+        if (pageNumber <= 0 || pageSize <= 0) return BadRequest("Page number and page size must be greater than 0.");
 
         var productsPage = await productService.GetAllProductsPagedAsync(pageNumber, pageSize);
-        if (!productsPage.Items.Any())
-        {
-            return NotFound();
-        }
+        if (!productsPage.Items.Any()) return NotFound();
 
-        return Ok(productsPage.Items);
+        return Ok(mapper.Map(productsPage));
     }
 
     /// <summary>
@@ -64,6 +61,7 @@ public class ProductsController(IProductService productService) : ControllerBase
     /// <param name="id">The ID of the product</param>
     /// <returns>The product details</returns>
     [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -86,9 +84,31 @@ public class ProductsController(IProductService productService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<ProductResponse>> UpdateProduct(int id, [FromBody] string newDescription)
+    public async Task<ActionResult<ProductResponse>> UpdateProductV1(int id, [FromBody] string newDescription)
     {
         var product = await productService.UpdateProductDescriptionAsync(id, newDescription);
+        if (product == null) return NotFound();
         return Ok(product);
+    }
+
+    /// <summary>
+    /// Updates the description of an existing product using Mediator pattern (Version 2)
+    /// | Zmena obsahu popisu zvoleneho produktu s vyuzitim Mediator patternu
+    /// </summary>
+    /// <param name="id">The ID of the product</param>
+    /// <param name="newDescription"></param>
+    /// <returns>The updated product</returns>
+    [HttpPatch("{id:int}/v2")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [MapToApiVersion("2.0")]
+    public async Task<ActionResult<ProductResponse>> UpdateProductV2(int id, [FromBody] string newDescription)
+    {
+        var result = await mediator.Send(new UpdateProductDescriptionActivity(id, newDescription));
+
+        if (result == null) return NotFound();
+        return Ok(result);
     }
 }

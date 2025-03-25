@@ -13,11 +13,13 @@ public class BusinessGoalServiceTests
 {
     private readonly Mock<IProductRepository> _mockProductRepository;
     private readonly ProductService _service;
+    private readonly CancellationToken _cancellationToken;
 
     public BusinessGoalServiceTests()
     {
         _mockProductRepository = new Mock<IProductRepository>();
         _service = new ProductService(_mockProductRepository.Object, new ApplicationMapper());
+        _cancellationToken = It.IsAny<CancellationToken>();
     }
 
     [Fact]
@@ -25,7 +27,7 @@ public class BusinessGoalServiceTests
     {
         // Arrange
         _mockProductRepository
-            .Setup(x => x.GetAllAsync())
+            .Setup(x => x.GetAllAsync(_cancellationToken))
             .ReturnsAsync(StaticProductList);
 
         // Act
@@ -34,7 +36,7 @@ public class BusinessGoalServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Should().HaveCount(StaticProductList.Count);
-        _mockProductRepository.Verify(x => x.GetAllAsync(), Times.Once);
+        _mockProductRepository.Verify(x => x.GetAllAsync(_cancellationToken), Times.Once);
     }
 
     [Fact]
@@ -42,7 +44,7 @@ public class BusinessGoalServiceTests
     {
         // Arrange
         _mockProductRepository
-            .Setup(x => x.GetAllAsync())
+            .Setup(x => x.GetAllAsync(_cancellationToken))
             .ThrowsAsync(new Exception());
 
         // Act
@@ -50,7 +52,7 @@ public class BusinessGoalServiceTests
 
         // Assert
         await act.Should().ThrowAsync<Exception>();
-        _mockProductRepository.Verify(x => x.GetAllAsync(), Times.Once);
+        _mockProductRepository.Verify(x => x.GetAllAsync(_cancellationToken), Times.Once);
     }
 
     [Fact]
@@ -58,7 +60,7 @@ public class BusinessGoalServiceTests
     {
         // Arrange
         const int productId = 42;
-        _mockProductRepository.Setup(x => x.GetByIdAsync(productId))
+        _mockProductRepository.Setup(x => x.GetByIdAsync(productId, _cancellationToken))
             .ReturnsAsync(new ProductDto { Id = productId });
 
         // Act
@@ -67,7 +69,7 @@ public class BusinessGoalServiceTests
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(productId);
-        _mockProductRepository.Verify(x => x.GetByIdAsync(productId), Times.Once);
+        _mockProductRepository.Verify(x => x.GetByIdAsync(productId, _cancellationToken), Times.Once);
     }
 
     [Fact]
@@ -91,7 +93,7 @@ public class BusinessGoalServiceTests
         };
 
         _mockProductRepository
-            .Setup(x => x.GetPagedAsync(pageNumber, pageSize))
+            .Setup(x => x.GetPagedAsync(pageNumber, pageSize, _cancellationToken))
             .ReturnsAsync(pagedResult);
 
         // Act
@@ -105,7 +107,7 @@ public class BusinessGoalServiceTests
         result.Items.Should().HaveCount(pageSize);
         result.Items.First().Id.Should().Be(expectedProducts.First().Id);
         result.Items.Last().Id.Should().Be(expectedProducts.Last().Id);
-        _mockProductRepository.Verify(x => x.GetPagedAsync(pageNumber, pageSize), Times.Once);
+        _mockProductRepository.Verify(x => x.GetPagedAsync(pageNumber, pageSize, _cancellationToken), Times.Once);
     }
 
     private static readonly List<ProductDto> StaticProductList =

@@ -57,7 +57,6 @@ public class ProductService(IProductRepository repository, IApplicationMapper ma
     {
         var product = await repository.GetByIdAsync(id);
         return product is null ? null : mapper.Map(product);
-
     }
 
     /// <summary>
