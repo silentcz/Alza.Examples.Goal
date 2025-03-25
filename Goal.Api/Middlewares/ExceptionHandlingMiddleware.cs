@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Goal.API.Middlewares;
 public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
@@ -64,15 +65,17 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
         };
 
         return context.Response.WriteAsync(
-            JsonSerializer.Serialize(new
+            JsonSerializer.Serialize(new ProblemDetails
             {
-                StatusCode = context.Response.StatusCode,
-                Message = message
+                Status = context.Response.StatusCode,
+                Title = context.Response.StatusCode.ToString(),
+                Detail = message
             })
         );
     }
     /* zachyceni nativnich vyjimek
      * pridani vlastnich vyjimek
      * serializace do Json kvuli context.Response.ContentType = "application/json"
+     * standardizace response podle RFC 7807
      */
 }

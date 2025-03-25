@@ -31,6 +31,13 @@ builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
 // Reg. services using ServiceExtensions (and other DI configurations)
 builder.Services.AddServices(builder.Configuration);
+// Add MediatR
+builder.Services.AddMediatR(cfg => {
+    // registration handlers from API
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    // registration handlers from activities
+    cfg.RegisterServicesFromAssembly(typeof(Goal.Application.Activities.Product.UpdateProductDescriptionActivity).Assembly);
+});
 
 var app = builder.Build();
 
@@ -48,7 +55,8 @@ app.UseSwaggerUI(options =>
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseHttpsRedirection();
+// https redirect not need it
+//app.UseHttpsRedirection();
 
 app.MapControllers();
 

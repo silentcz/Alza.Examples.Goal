@@ -81,20 +81,32 @@ public class ProductRepository(GoalDatabaseContext dbContext, IInfrastructureMap
         /* var existingProduct = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
          * old: - neoptimalni,
          *      - nepouziva cancellationToken
+         *      - SaveChangesAsync spadne kvuli SqlServerRetryingExecutionStrategy
          */
 
         var existingProduct = await dbContext.Products.FindAsync([id], cancellationToken);
-
         if (existingProduct is null) return null;
 
-        await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
-        existingProduct.Description = newDescription;
-        await dbContext.SaveChangesAsync(cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
-        /* pouziti: cancellationToken
-         * pridan:  transaction
-         */
+        try
+        {
+            var strategy = dbContext.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
+            {
+                await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+                existingProduct.Description = newDescription;
+                await dbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+            });
+            /* pouziti: cancellationToken
+             * pridan:  transaction
+             * fix:     pouziti CreateExecutionStrategy, ktera automaticky opakuje operace pri prechodnych chybach pripojeni
+             */
 
-        return mapper.Map(existingProduct);
+            return mapper.Map(existingProduct);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Error updating product", ex);
+        }
     }
 }
